@@ -1,6 +1,6 @@
 {
   "name": "@getbugflow/embed",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "description": "Bugflow visual feedback & bug-reporting widget. Drop-in launcher with screenshot capture, annotation, and technical-context collection.",
   "repository": {
