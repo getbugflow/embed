@@ -1,0 +1,40 @@
+name: Publish stable to npm
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+
+      # Version comes from package.json's "packageManager" field. Must be
+      # pnpm >= 11.1.3: OIDC trusted publishing is a pnpm 11 feature (11.0.7
+      # gave OIDC precedence over static tokens; 11.1.3 fixed a setup-node
+      # placeholder 404). pnpm 10.x has no OIDC support, so it errors ENEEDAUTH.
+      - uses: pnpm/action-setup@v6
+
+      # No registry-url: that makes setup-node write an .npmrc with
+      # `_authToken=${NODE_AUTH_TOKEN}`, whose unresolved placeholder pnpm can
+      # send as a bearer token and break OIDC trusted publishing (npm 404).
+      # pnpm defaults to registry.npmjs.org, which is what we publish to.
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm test
+
+      # Publishes the version from package.json under the default `latest`
+      # dist-tag. Bump package.json version + push a matching `vX.Y.Z` tag to
+      # release. Auth is via OIDC trusted publishing (id-token: write above),
+      # so no NPM_TOKEN is needed.
+      - run: pnpm publish --access public --no-git-checks

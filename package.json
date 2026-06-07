@@ -1,0 +1,29 @@
+{
+  "name": "@getbugflow/embed",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Bugflow visual feedback & bug-reporting widget. Drop-in launcher with screenshot capture, annotation, and technical-context collection.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "echo \"(no tests yet)\" && exit 0"
+  },
+  "author": "521 Dimensions",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@11.3.0",
+  "dependencies": {
+    "@getbugflow/annotator-core": "^0.6.0",
+    "hotkeys-js": "^3.13.15",
+    "konva": "^9",
+    "modern-screenshot": "^4.6.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
